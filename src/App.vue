@@ -1,5 +1,5 @@
 <template>
-  <div v-bind:class="{ work: working, break: !working }">
+  <div id="container" v-bind:class="{ work: working, break: !working }">
     <h1 id="countdown" class="white-text">{{ remainingTime | countdown }}</h1>
     <div v-if="working">
       <p class="subtitle">until break starts</p>
@@ -63,11 +63,11 @@ export default {
 
 <style scoped>
 .work {
-  background-color: #001021;
+  background-color: #2a9d8f;
 }
 
 .break {
-  background-color: green;
+  background-color: #e76f51;
 }
 
 .subtitle {
@@ -90,6 +90,10 @@ export default {
 
 * {
   margin: 0;
+}
+
+#container {
+  height: 100vh;
 }
 
 #app {
