@@ -1,18 +1,31 @@
 <template>
   <div id="container" v-bind:class="{ work: working, break: !working }">
     <h1 id="countdown" class="white-text">{{ remainingTime | countdown }}</h1>
-    <div v-if="working">
-      <p class="subtitle">until break starts</p>
+    <div>
+      <div v-if="working">
+        <p class="subtitle">until break starts</p>
+      </div>
+      <div v-else>
+        <p class="subtitle">until break ends</p>
+      </div>
     </div>
-    <div v-else>
-      <p class="subtitle">until break ends</p>
-    </div>
+    <Actions
+      :paused="paused"
+      v-on:pause="paused = !paused"
+      v-on:skip="skip()"
+      v-on:extra-time="remainingTime += 5 * 60"
+    />
   </div>
 </template>
 
 <script>
+import Actions from "./components/Actions";
+
 export default {
   name: "Countdown",
+  components: {
+    Actions,
+  },
   data() {
     return {
       workTime: 10,
@@ -51,12 +64,21 @@ export default {
     },
     changeMode() {
       this.working = !this.working;
+
       if (this.working) {
         this.remainingTime = this.workTime;
       } else {
         this.remainingTime = this.breakTime;
       }
     },
+    skip(){
+      this.paused = false;
+      if(this.remainingTime <= 0){
+        setTimeout(this.countdown, 1000);
+      }
+
+      this.changeMode();
+    }
   },
 };
 </script>
@@ -74,7 +96,7 @@ export default {
   font-size: 1.4em;
   font-weight: 400;
   text-align: center;
-  color: rgba(255,255,255,0.8)
+  color: rgba(255, 255, 255, 0.8);
 }
 
 #countdown {
@@ -83,6 +105,10 @@ export default {
   font-size: 6em;
   text-align: center;
 }
+
+#container {
+  height: 100vh;
+}
 </style>
 
 <style>
@@ -90,10 +116,6 @@ export default {
 
 * {
   margin: 0;
-}
-
-#container {
-  height: 100vh;
 }
 
 #app {
