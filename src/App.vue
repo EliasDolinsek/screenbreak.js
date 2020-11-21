@@ -1,15 +1,12 @@
 <template>
-  <div v-bind:class="{ work: working }">
-    <h1 class="text-center">{{ remainingTime }}</h1>
+  <div v-bind:class="{ work: working, break: !working }">
+    <h1 id="countdown" class="white-text">{{ remainingTime | countdown }}</h1>
     <div v-if="working">
-      <p>until next break</p>
+      <p class="subtitle">until break starts</p>
     </div>
     <div v-else>
-      <p>until break ends</p>
+      <p class="subtitle">until break ends</p>
     </div>
-    <b-row>
-      <b-icon icon="pause-fill"></b-icon>
-    </b-row>
   </div>
 </template>
 
@@ -25,6 +22,17 @@ export default {
       working: true,
     };
   },
+  filters: {
+    countdown: function (value) {
+      let minutes = parseInt(value / 60);
+      let seconds = value % 60;
+
+      if (minutes < 10) minutes = "0" + minutes;
+      if (seconds < 10) seconds = "0" + seconds;
+
+      return minutes + ":" + seconds;
+    },
+  },
   mounted() {
     this.countdown();
   },
@@ -34,11 +42,9 @@ export default {
         this.remainingTime -= 1;
       }
 
-      if (this.remainingTime < 0) {
-        this.changeMode();
+      if (this.remainingTime > 0) {
+        setTimeout(this.countdown, 1000);
       }
-
-      setTimeout(this.countdown, 1000);
     },
     pauseContinueCountdown() {
       this.paused = !this.paused;
@@ -57,7 +63,25 @@ export default {
 
 <style scoped>
 .work {
-  background-color: #5998c5;
+  background-color: #001021;
+}
+
+.break {
+  background-color: green;
+}
+
+.subtitle {
+  font-size: 1.4em;
+  font-weight: 400;
+  text-align: center;
+  color: rgba(255,255,255,0.8)
+}
+
+#countdown {
+  color: white;
+  font-weight: 600;
+  font-size: 6em;
+  text-align: center;
 }
 </style>
 
@@ -73,7 +97,7 @@ export default {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  color: #2c3e50;
+  color: white;
   margin-top: 60px;
 }
 </style>
