@@ -20,6 +20,17 @@
       v-on:skip="skip()"
       v-on:extra-time="addExtraTime()"
     />
+
+    <audio
+      id="single-bing"
+      preload="autio"
+      src="@/assets/clock_single_bing.wav"
+    ></audio>
+    <audio
+      id="double-bing"
+      preload="autio"
+      src="@/assets/clock_double_bing.wav"
+    ></audio>
   </div>
 </template>
 
@@ -62,7 +73,19 @@ export default {
 
       if (this.remainingTime > 0) {
         setTimeout(this.countdown, 1000);
+      } else {
+        this.playFinishedSound();
       }
+    },
+    playFinishedSound() {
+      let audio = null;
+      if (this.working) {
+        audio = document.getElementById("single-bing");
+      } else {
+        audio = document.getElementById("double-bing");
+      }
+
+      audio.play();
     },
     pauseContinueCountdown() {
       this.paused = !this.paused;
@@ -106,13 +129,16 @@ export default {
 
   display: flex;
   flex-direction: row;
+  align-items: center;
 }
+
 #content-container {
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
 }
+
 .work {
   background-color: #2a9d8f;
 }
