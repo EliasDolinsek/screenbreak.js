@@ -1,18 +1,25 @@
 <template>
-  <div id="content">
+  <div>
     <button class="img-button" v-on:click="$emit('extra-time')">
-       <span id="txt-extra-time">+5</span> 
+      <span id="txt-extra-time">+5</span>
     </button>
-    <button class="img-button" v-on:click="$emit('pause')">
-      <img
-        v-bind:class="{ 'img-active': paused }"
-        src="@/assets/pause.svg"
-        width="32"
-      />
-    </button>
-    <button class="img-button" v-on:click="$emit('skip')">
-      <img src="@/assets/forward.svg" width="32" />
-    </button>
+    <div v-if="remainingTime > 0">
+      <button class="img-button spacing-left" v-on:click="$emit('pause')">
+        <img
+          v-bind:class="{ 'img-active': paused }"
+          src="@/assets/pause.svg"
+          width="32"
+        />
+      </button>
+      <button class="img-button spacing-left" v-on:click="$emit('skip')">
+        <img src="@/assets/forward.svg" width="32" />
+      </button>
+    </div>
+    <div v-else>
+      <button class="img-button spacing-left" v-on:click="$emit('skip')">
+        <img src="@/assets/check.svg" width="32" />
+      </button>
+    </div>
   </div>
 </template>
 
@@ -38,10 +45,9 @@ export default {
     opacity: 0.7;
   }
 }
-#content {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
+
+.spacing-left {
+    margin-left: 20px;
 }
 
 .img-button {
@@ -57,8 +63,8 @@ export default {
 }
 
 #txt-extra-time {
-    font-size: 32px;
-    font-weight: 600;
-    color: white;
+  font-size: 32px;
+  font-weight: 600;
+  color: white;
 }
 </style>

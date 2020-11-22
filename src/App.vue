@@ -1,19 +1,24 @@
 <template>
   <div id="container" v-bind:class="{ work: working, break: !working }">
-    <h1 id="countdown" class="white-text">{{ remainingTime | countdown }}</h1>
-    <div>
-      <div v-if="working">
-        <p class="subtitle">until break starts</p>
-      </div>
-      <div v-else>
-        <p class="subtitle">until break ends</p>
+    <div id="content-container">
+      <h1 id="countdown" class="white-text">{{ remainingTime | countdown }}</h1>
+      <div>
+        <div v-if="working">
+          <p class="subtitle">until break starts</p>
+        </div>
+        <div v-else>
+          <p class="subtitle">until break ends</p>
+        </div>
       </div>
     </div>
     <Actions
+      id="actions"
       :paused="paused"
+      :remainingTime="remainingTime"
+      :working="working"
       v-on:pause="paused = !paused"
       v-on:skip="skip()"
-      v-on:extra-time="remainingTime += 5 * 60"
+      v-on:extra-time="addExtraTime()"
     />
   </div>
 </template>
@@ -71,19 +76,43 @@ export default {
         this.remainingTime = this.breakTime;
       }
     },
-    skip(){
+    skip() {
       this.paused = false;
-      if(this.remainingTime <= 0){
+      if (this.remainingTime <= 0) {
         setTimeout(this.countdown, 1000);
       }
 
       this.changeMode();
-    }
+    },
+    addExtraTime() {
+      const time = 5 * 60;
+      if (this.remainingTime == 0) {
+        this.remainingTime += time;
+        this.countdown();
+      } else {
+        this.remainingTime += time;
+      }
+    },
   },
 };
 </script>
 
 <style scoped>
+#actions {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+
+  display: flex;
+  flex-direction: row;
+}
+#content-container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
 .work {
   background-color: #2a9d8f;
 }
@@ -93,8 +122,7 @@ export default {
 }
 
 .subtitle {
-  font-size: 1.4em;
-  font-weight: 400;
+  font-size: 1.2em;
   text-align: center;
   color: rgba(255, 255, 255, 0.8);
 }
@@ -104,6 +132,7 @@ export default {
   font-weight: 600;
   font-size: 6em;
   text-align: center;
+  line-height: 0.9em;
 }
 
 #container {
@@ -116,10 +145,10 @@ export default {
 
 * {
   margin: 0;
+  font-family: "Open Sans", sans-serif;
 }
 
 #app {
-  font-family: "Open Sans", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
