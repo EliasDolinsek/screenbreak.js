@@ -11,6 +11,12 @@
         </div>
       </div>
     </div>
+    <button id="btn-settings" class="img-button" v-on:click="$emit('pause')">
+        <img
+          src="@/assets/settings.svg"
+          width="24"
+        />
+     </button>
     <Actions
       id="actions"
       :paused="paused"
@@ -164,6 +170,12 @@ export default {
 #container {
   height: 100vh;
 }
+
+#btn-settings {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+}
 </style>
 
 <style>
@@ -180,5 +192,11 @@ export default {
   text-align: center;
   color: white;
   margin-top: 60px;
+}
+
+.img-button {
+  background: none;
+  border: none;
+  outline: none;
 }
 </style>

@@ -50,12 +50,6 @@ export default {
     margin-left: 20px;
 }
 
-.img-button {
-  background: none;
-  border: none;
-  outline: none;
-}
-
 .img-active {
   animation-name: activate-img-button;
   animation-duration: 0.5s;
