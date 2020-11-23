@@ -41,6 +41,7 @@
 </template>
 
 <script>
+const electron = window.require("electron");
 import Actions from "./components/Actions";
 
 export default {
@@ -72,6 +73,13 @@ export default {
     this.countdown();
   },
   methods: {
+    showNotification(title, message){
+      const notification = {
+        title: title,
+        body: message 
+      }
+      new electron.remote.Notification(notification).show()
+    },
     countdown() {
       if (!this.paused) {
         this.remainingTime -= 1;
@@ -80,7 +88,15 @@ export default {
       if (this.remainingTime > 0) {
         setTimeout(this.countdown, 1000);
       } else {
-        this.playFinishedSound();
+        this.onCountdownFinished();
+      }
+    },
+    onCountdownFinished(){
+      this.playFinishedSound();
+      if(this.working){
+        this.showNotification("Time for a break", "Start moving!")
+      } else {
+        this.showNotification("Get back to work", "Time to get things done!")
       }
     },
     playFinishedSound() {
