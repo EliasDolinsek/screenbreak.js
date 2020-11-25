@@ -54,10 +54,14 @@
 
 <script>
 const electron = window.require("electron");
+const path = window.require("path");
+const fs = window.require("fs");
 
 import Actions from "./components/Actions";
 import Settings from "./components/Settings";
 
+const userDataPath = (electron.app || electron.remote.app).getPath('userData');
+const configFile = path.join(userDataPath, "config.json");
 
 export default {
   name: "Countdown",
@@ -175,7 +179,22 @@ export default {
         this.remainingTime += time;
       }
     },
+    writeConfig(){
+      let config = {
+        playSoundEffects: this.playSoundEffects,
+        showNotifications: this.showNotifications,
+        workTime: this.workTime,
+        breakTime: this.breakTime
+      }
+
+      fs.writeFileSync(configFile, JSON.stringify(config));
+    }
   },
+  watch: {
+    workTime: function(){
+      this.writeConfig()
+    }
+  }
 };
 </script>
 
