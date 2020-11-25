@@ -275,7 +275,7 @@ export default {
   top: 5vh;
   left: 10vw;
   width: 80vw;
-  height: 100%;
+  padding: 20px;
   overflow: auto;
 }
 
