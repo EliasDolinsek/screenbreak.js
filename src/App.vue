@@ -1,7 +1,13 @@
 <template>
   <div id="container" v-bind:class="{ work: working, break: !working }">
     <div id="settings-modal">
-      <Settings v-on:close-settings="closeSettings()"/>
+      <Settings 
+        v-on:close-settings="closeSettings()"
+        :workTime="workTime"
+        :breakTime="breakTime"
+        v-on:update-break-time="breakTime = parseInt($event)"
+        v-on:update-work-time="workTime = parseInt($event)"
+      />
     </div>
     <div id="content-container">
       <h1 id="countdown" class="white-text">{{ remainingTime | countdown }}</h1>
@@ -58,9 +64,9 @@ export default {
   },
   data() {
     return {
-      workTime: 10,
-      breakTime: 10,
-      remainingTime: 10,
+      workTime: 15 * 60,
+      breakTime: 30,
+      remainingTime: 15 * 60,
       paused: false,
       working: true,
     };
