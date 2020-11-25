@@ -5,8 +5,12 @@
         v-on:close-settings="closeSettings()"
         :workTime="workTime"
         :breakTime="breakTime"
+        :playSoundEffects="playSoundEffects"
+        :showNotifications="showNotifications"
         v-on:update-break-time="breakTime = parseInt($event)"
         v-on:update-work-time="workTime = parseInt($event)"
+        v-on:show-notifications-change="showNotifications = !showNotifications"
+        v-on:play-sound-effects-change="playSoundEffects = !playSoundEffects"
       />
     </div>
     <div id="content-container">
@@ -33,8 +37,7 @@
       :working="working"
       v-on:pause="paused = !paused"
       v-on:skip="skip()"
-      v-on:extra-time="addExtraTime()"
-    />
+      v-on:extra-time="addExtraTime()" />
 
     <audio
       id="single-bing"
@@ -69,6 +72,8 @@ export default {
       remainingTime: 15 * 60,
       paused: false,
       working: true,
+      playSoundEffects: true,
+      showNotifications: true
     };
   },
   filters: {
@@ -119,11 +124,16 @@ export default {
       }
     },
     onCountdownFinished(){
-      this.playFinishedSound();
-      if(this.working){
-        this.showNotification("Time for a break", "Start moving!")
-      } else {
-        this.showNotification("Get back to work", "Time to get things done!")
+      if(this.playSoundEffect){
+        this.playFinishedSound();
+      }
+
+      if(this.showNotifications){
+        if(this.working){
+          this.showNotification("Time for a break", "Start moving!")
+        } else {
+          this.showNotification("Get back to work", "Time to get things done!")
+        }
       }
     },
     playFinishedSound() {
