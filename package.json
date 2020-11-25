@@ -1,7 +1,13 @@
 {
   "name": "screenbreakjs",
+  "description": "Reminder to make screen breaks",
   "version": "0.1.0",
   "private": true,
+  "author": {
+    "name": "Elias Dolinsek",
+    "email": "elias.dolinsek@outlook.com",
+    "url": "https://github.com/EliasDolinsek"
+  },
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
