@@ -71,9 +71,9 @@ export default {
   },
   data() {
     return {
-      workTime: 15 * 60,
-      breakTime: 30,
-      remainingTime: 15 * 60,
+      workTime: 1800,
+      breakTime: 120,
+      remainingTime: 1800,
       paused: false,
       working: true,
       playSoundEffects: true,
@@ -193,7 +193,26 @@ export default {
   watch: {
     workTime: function(){
       this.writeConfig()
+    },
+    breakTime: function(){
+      this.writeConfig();
+    },
+    showNotifications: function(){
+      this.writeConfig();
+    },
+    playSoundEffects: function(){
+      this.writeConfig();
     }
+  },
+  created: function(){
+    let content = JSON.parse(fs.readFileSync(configFile, "utf-8"));
+
+    this.showNotifications = content["showNotifications"];
+    this.playSoundEffects = content["playSoundEffects"];
+    this.workTime = content["workTime"];
+    this.breakTime = content["breakTime"];
+    
+    this.remainingTIme = this.workTime;
   }
 };
 </script>
@@ -218,11 +237,11 @@ export default {
 }
 
 .work {
-  background-color: #2a9d8f;
+  background-color: var(--primary-color);
 }
 
 .break {
-  background-color: #e76f51;
+  background-color: var(--background-color);
 }
 
 .subtitle {
@@ -268,6 +287,8 @@ export default {
 * {
   margin: 0;
   font-family: "Open Sans", sans-serif;
+  --primary-color: #2a9d8f;
+  --break-color: #e76f51;
 }
 
 #app {
