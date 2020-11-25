@@ -282,8 +282,26 @@ export default {
 </style>
 
 <style>
-@import url("https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap");
+@font-face {
+  font-family: "Open Sans";
+  src: url("./assets/open_sans/OpenSans-Regular.ttf");
+  font-weight: 400;
+  font-style: normal;
+}
 
+@font-face {
+  font-family: "Open Sans";
+  src: url("./assets/open_sans/OpenSans-SemiBold.ttf");
+  font-weight: 600;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Open Sans";
+  src: url("./assets/open_sans/OpenSans-Bold.ttf");
+  font-weight: 700;
+  font-style: normal;
+}
 * {
   margin: 0;
   font-family: "Open Sans", sans-serif;
