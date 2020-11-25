@@ -13,12 +13,6 @@
     "pack": "electron-builder --dir",
     "dist": "electron-builder"
   },
-  "build": {
-    "appId": "com.dolinsek.elias.screenbreakjs",
-    "mac": {
-      "category": "public.app-category.utilities"
-    }
-  },
   "main": "background.js",
   "dependencies": {
     "core-js": "^3.6.5",
