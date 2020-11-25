@@ -1,24 +1,15 @@
 # screenbreakjs
+Reminder to make screen breaks.
 
-## Project setup
-```
-npm install
-```
+### Description
+Are you sitting for hours without an end in front of your computer? screenbreakjs reminds you to make a short break. You can select a break time from 30s to 10min, and a work time from 15min to 60min. When the countdown ends, you will get a notification and a aucustic reminder to make a break.
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
+### Features
+* Set work time
+* Set break time
+* Get desktop notification
+* Play aucistic reminder
 
-### Compiles and minifies for production
-```
-npm run build
-```
-
-### Lints and fixes files
-```
-npm run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+![work](https://i.ibb.co/J7gKL2M/screenbreakjs-work.png)
+!["break"](https://i.ibb.co/3csbWTB/screenbreakjs-break.png)
+!["settings"](https://i.ibb.co/X4Xv0wr/screenbreakjs-settings.png)
