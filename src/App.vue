@@ -288,6 +288,7 @@ export default {
   margin: 0;
   font-family: "Open Sans", sans-serif;
   --primary-color: #2a9d8f;
+  --primary-color-dark: #20796f;
   --break-color: #e76f51;
 }
 
@@ -303,5 +304,20 @@ export default {
   background: none;
   border: none;
   outline: none;
+}
+
+button {
+  border: none;
+  background-color: var(--primary-color);
+  color: white;
+  font-weight: 600;
+  font-size: 0.8em;
+  padding: 8px 16px 8px 16px;
+  border-radius: 4px;
+  outline: none;
+}
+
+button:active {
+  background-color: var(--primary-color-dark);
 }
 </style>
