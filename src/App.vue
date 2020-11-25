@@ -241,7 +241,7 @@ export default {
 }
 
 .break {
-  background-color: var(--background-color);
+  background-color: var(--break-color);
 }
 
 .subtitle {
