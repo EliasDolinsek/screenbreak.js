@@ -4,7 +4,7 @@
       <span id="txt-extra-time">+5</span>
     </button>
     <div v-if="remainingTime > 0">
-      <button class="img-button spacing-left" v-on:click="$emit('pause')">
+      <button id="btn-pause" class="img-button spacing-left" v-on:click="$emit('pause')">
         <img
           v-bind:class="{ 'img-active': paused }"
           src="@/assets/pause.svg"
@@ -60,5 +60,9 @@ export default {
   font-size: 32px;
   font-weight: 600;
   color: white;
+}
+
+#btn-pause:active {
+  background-color: transparent;
 }
 </style>
