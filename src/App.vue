@@ -1,5 +1,8 @@
 <template>
   <div id="container" v-bind:class="{ work: working, break: !working }">
+    <div id="settings-modal">
+      <Settings />
+    </div>
     <div id="content-container">
       <h1 id="countdown" class="white-text">{{ remainingTime | countdown }}</h1>
       <div>
@@ -11,7 +14,7 @@
         </div>
       </div>
     </div>
-    <button id="btn-settings" class="img-button" v-on:click="$emit('pause')">
+    <button id="btn-settings" class="img-button" v-on:click="showSettings()">
         <img
           src="@/assets/settings.svg"
           width="24"
@@ -42,12 +45,16 @@
 
 <script>
 const electron = window.require("electron");
+
 import Actions from "./components/Actions";
+import Settings from "./components/Settings";
+
 
 export default {
   name: "Countdown",
   components: {
     Actions,
+    Settings
   },
   data() {
     return {
@@ -73,6 +80,9 @@ export default {
     this.countdown();
   },
   methods: {
+    showSettings(){
+      document.getElementById("settings-modal").style.display = "block";
+    },
     showNotification(title, message){
       const notification = {
         title: title,
@@ -192,6 +202,18 @@ export default {
   top: 10px;
   right: 10px;
 }
+
+#settings-modal {
+  display: none;
+  position: fixed;
+  z-index: 1;
+  top: 5vh;
+  left: 10vw;
+  width: 80vw;
+  height: 100%;
+  overflow: auto;
+}
+
 </style>
 
 <style>
