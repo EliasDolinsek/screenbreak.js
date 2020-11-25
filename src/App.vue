@@ -1,7 +1,7 @@
 <template>
   <div id="container" v-bind:class="{ work: working, break: !working }">
     <div id="settings-modal">
-      <Settings />
+      <Settings v-on:close-settings="closeSettings()"/>
     </div>
     <div id="content-container">
       <h1 id="countdown" class="white-text">{{ remainingTime | countdown }}</h1>
@@ -14,7 +14,7 @@
         </div>
       </div>
     </div>
-    <button id="btn-settings" class="img-button" v-on:click="showSettings()">
+    <button id="btn-settings" class="img-button" v-on:click="onSettingsClicked()">
         <img
           src="@/assets/settings.svg"
           width="24"
@@ -82,6 +82,17 @@ export default {
   methods: {
     showSettings(){
       document.getElementById("settings-modal").style.display = "block";
+    },
+    closeSettings(){
+      document.getElementById("settings-modal").style.display = "none";
+    },
+    onSettingsClicked(){
+      let settingsModal = document.getElementById("settings-modal");
+      if(settingsModal.style.display == "block"){
+        settingsModal.style.display = "none";
+      } else {
+        settingsModal.style.display = "block";
+      }
     },
     showNotification(title, message){
       const notification = {
