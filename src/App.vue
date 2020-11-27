@@ -128,7 +128,7 @@ export default {
       }
     },
     onCountdownFinished(){
-      if(this.playSoundEffect){
+      if(this.playSoundEffects){
         this.playFinishedSound();
       }
 
@@ -212,7 +212,7 @@ export default {
     this.workTime = content["workTime"];
     this.breakTime = content["breakTime"];
     
-    this.remainingTIme = this.workTime;
+    this.remainingTime = this.workTime;
   }
 };
 </script>
