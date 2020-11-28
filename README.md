@@ -9,7 +9,8 @@ Are you sitting for hours without an end in front of your computer? screenbreakj
 * Set break time
 * Get desktop notification
 * Play aucistic reminder
+* Bring app into the foreground when countdown finished
 
 ![work](https://i.ibb.co/J7gKL2M/screenbreakjs-work.png)
 !["break"](https://i.ibb.co/3csbWTB/screenbreakjs-break.png)
-!["settings"](https://i.ibb.co/X4Xv0wr/screenbreakjs-settings.png)
+!["settings"](https://i.ibb.co/3yYjNF2/Bildschirmfoto-2020-11-28-um-11-29-04.png)
