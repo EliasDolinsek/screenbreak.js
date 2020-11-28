@@ -1,16 +1,18 @@
 <template>
   <div id="container" v-bind:class="{ work: working, break: !working }">
     <div id="settings-modal">
-      <Settings 
-        v-on:close-settings="closeSettings()"
-        :workTime="workTime"
-        :breakTime="breakTime"
-        :playSoundEffects="playSoundEffects"
-        :showNotifications="showNotifications"
-        v-on:update-break-time="breakTime = parseInt($event)"
-        v-on:update-work-time="workTime = parseInt($event)"
-        v-on:show-notifications-change="showNotifications = !showNotifications"
-        v-on:play-sound-effects-change="playSoundEffects = !playSoundEffects"
+      <Settings
+          v-on:close-settings="closeSettings()"
+          :workTime="workTime"
+          :breakTime="breakTime"
+          :playSoundEffects="playSoundEffects"
+          :showNotifications="showNotifications"
+          :bring-into-foreground-on-countdown-finished="bringIntoForegroundOnCountdownFinished"
+          v-on:update-break-time="breakTime = parseInt($event)"
+          v-on:update-work-time="workTime = parseInt($event)"
+          v-on:show-notifications-change="showNotifications = !showNotifications"
+          v-on:play-sound-effects-change="playSoundEffects = !playSoundEffects"
+          v-on:bring-into-foreground-change="bringIntoForegroundOnCountdownFinished = !bringIntoForegroundOnCountdownFinished"
       />
     </div>
     <div id="content-container">
@@ -25,29 +27,29 @@
       </div>
     </div>
     <button id="btn-settings" class="img-button" v-on:click="onSettingsClicked()">
-        <img
+      <img
           src="@/assets/settings.svg"
           width="24"
-        />
-     </button>
+      />
+    </button>
     <Actions
-      id="actions"
-      :paused="paused"
-      :remainingTime="remainingTime"
-      :working="working"
-      v-on:pause="paused = !paused"
-      v-on:skip="skip()"
-      v-on:extra-time="addExtraTime()" />
+        id="actions"
+        :paused="paused"
+        :remainingTime="remainingTime"
+        :working="working"
+        v-on:pause="paused = !paused"
+        v-on:skip="skip()"
+        v-on:extra-time="addExtraTime()"/>
 
     <audio
-      id="single-bing"
-      preload="auto"
-      src="@/assets/clock_single_bing.wav"
+        id="single-bing"
+        preload="auto"
+        src="@/assets/clock_single_bing.wav"
     ></audio>
     <audio
-      id="double-bing"
-      preload="auto"
-      src="@/assets/clock_double_bing.wav"
+        id="double-bing"
+        preload="auto"
+        src="@/assets/clock_double_bing.wav"
     ></audio>
   </div>
 </template>
@@ -78,7 +80,8 @@ export default {
       paused: false,
       working: true,
       playSoundEffects: true,
-      showNotifications: true
+      showNotifications: true,
+      bringIntoForegroundOnCountdownFinished: true
     };
   },
   filters: {
@@ -96,26 +99,31 @@ export default {
     this.countdown();
   },
   methods: {
-    showSettings(){
+    showSettings() {
       document.getElementById("settings-modal").style.display = "block";
     },
-    closeSettings(){
+    closeSettings() {
       document.getElementById("settings-modal").style.display = "none";
     },
-    onSettingsClicked(){
+    onSettingsClicked() {
       let settingsModal = document.getElementById("settings-modal");
-      if(settingsModal.style.display === "block"){
+      if (settingsModal.style.display === "block") {
         settingsModal.style.display = "none";
       } else {
         settingsModal.style.display = "block";
       }
     },
-    showNotification(title, message){
-      const notification = {
+    showNotification(title, message) {
+      const notification = new electron.remote.Notification({
         title: title,
-        body: message 
-      }
-      new electron.remote.Notification(notification).show()
+        body: message
+      })
+
+      notification.on("click", function () {
+        ipcRenderer.send("bring-to-foreground");
+      })
+
+      notification.show()
     },
     countdown() {
       if (!this.paused) {
@@ -128,14 +136,17 @@ export default {
         this.onCountdownFinished();
       }
     },
-    onCountdownFinished(){
-      if(this.playSoundEffects){
+    onCountdownFinished() {
+      if (this.playSoundEffects) {
         this.playFinishedSound();
       }
 
-      ipcRenderer.send("bring-to-foreground");
-      if(this.showNotifications){
-        if(this.working){
+      if (this.bringIntoForegroundOnCountdownFinished) {
+        ipcRenderer.send("bring-to-foreground");
+      }
+
+      if (this.showNotifications) {
+        if (this.working) {
           this.showNotification("Time for a break", "Start moving!")
         } else {
           this.showNotification("Get back to work", "Time to get things done!")
@@ -174,46 +185,51 @@ export default {
     },
     addExtraTime() {
       const time = 5 * 60;
-      if (this.remainingTime == 0) {
+      if (this.remainingTime === 0) {
         this.remainingTime += time;
         this.countdown();
       } else {
         this.remainingTime += time;
       }
     },
-    writeConfig(){
+    writeConfig() {
       let config = {
         playSoundEffects: this.playSoundEffects,
         showNotifications: this.showNotifications,
         workTime: this.workTime,
-        breakTime: this.breakTime
+        breakTime: this.breakTime,
+        bringIntoForegroundOnCountdownFinished: this.bringIntoForegroundOnCountdownFinished
       }
 
       fs.writeFileSync(configFile, JSON.stringify(config));
     }
   },
   watch: {
-    workTime: function(){
+    workTime: function () {
       this.writeConfig()
     },
-    breakTime: function(){
+    breakTime: function () {
       this.writeConfig();
     },
-    showNotifications: function(){
+    showNotifications: function () {
       this.writeConfig();
     },
-    playSoundEffects: function(){
+    playSoundEffects: function () {
       this.writeConfig();
+    },
+    bringIntoForegroundOnCountdownFinished: function () {
+      this.writeConfig()
     }
   },
-  created: function(){
+  created: function () {
     let content = JSON.parse(fs.readFileSync(configFile, "utf-8"));
 
     this.showNotifications = content["showNotifications"];
     this.playSoundEffects = content["playSoundEffects"];
     this.workTime = content["workTime"];
     this.breakTime = content["breakTime"];
-    
+    this.bringIntoForegroundOnCountdownFinished = content["bringIntoForegroundOnCountdownFinished"] ?? true
+
     this.remainingTime = this.workTime;
   }
 };
@@ -304,6 +320,7 @@ export default {
   font-weight: 700;
   font-style: normal;
 }
+
 * {
   margin: 0;
   font-family: "Open Sans", sans-serif;
