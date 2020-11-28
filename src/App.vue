@@ -224,11 +224,12 @@ export default {
   created: function () {
     let content = JSON.parse(fs.readFileSync(configFile, "utf-8"));
 
-    this.showNotifications = content["showNotifications"];
-    this.playSoundEffects = content["playSoundEffects"];
-    this.workTime = content["workTime"];
-    this.breakTime = content["breakTime"];
-    this.bringIntoForegroundOnCountdownFinished = content["bringIntoForegroundOnCountdownFinished"] ?? true
+    this.showNotifications = content["showNotifications"] ?? this.showNotifications
+    this.playSoundEffects = content["playSoundEffects"] ?? this.playSoundEffects
+    this.workTime = content["workTime"] ?? this.workTime
+    this.breakTime = content["breakTime"] ?? this.breakTime
+    this.bringIntoForegroundOnCountdownFinished = content["bringIntoForegroundOnCountdownFinished"]
+        ?? this.bringIntoForegroundOnCountdownFinished
 
     this.remainingTime = this.workTime;
   }
