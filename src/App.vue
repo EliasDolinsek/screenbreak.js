@@ -293,7 +293,7 @@ export default {
   top: 5vh;
   left: 10vw;
   width: 80vw;
-  padding: 20px;
+  padding: 9px;
   overflow: auto;
 }
 

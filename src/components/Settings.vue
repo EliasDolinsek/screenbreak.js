@@ -112,7 +112,7 @@ export default {
   padding: 20px;
   background-color: white;
   border-radius: 5px;
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  box-shadow: 0 0 9px 0 rgba(50, 50, 50, 0.49);
 }
 
 #settings-container {
