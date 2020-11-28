@@ -1,9 +1,11 @@
 'use strict'
 
-import { app, protocol, BrowserWindow } from 'electron'
+import { app, protocol, BrowserWindow, ipcMain } from 'electron'
 import { createProtocol } from 'vue-cli-plugin-electron-builder/lib'
 import installExtension, { VUEJS_DEVTOOLS } from 'electron-devtools-installer'
 const isDevelopment = process.env.NODE_ENV !== 'production'
+
+let mainWindow
 
 // Scheme must be registered before the app is ready
 protocol.registerSchemesAsPrivileged([
@@ -22,6 +24,8 @@ async function createWindow() {
       enableRemoteModule: true
     }
   })
+
+  mainWindow = win
 
   if (process.env.WEBPACK_DEV_SERVER_URL) {
     // Load the url of the dev server if in development mode
@@ -57,7 +61,12 @@ app.on('ready', async () => {
       console.error('Vue Devtools failed to install:', e.toString())
     }
   }
+
   createWindow()
+})
+
+ipcMain.on("bring-to-foreground", () => {
+  mainWindow.show()
 })
 
 // Exit cleanly on request from parent process in development mode.

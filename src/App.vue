@@ -41,12 +41,12 @@
 
     <audio
       id="single-bing"
-      preload="autio"
+      preload="auto"
       src="@/assets/clock_single_bing.wav"
     ></audio>
     <audio
       id="double-bing"
-      preload="autio"
+      preload="auto"
       src="@/assets/clock_double_bing.wav"
     ></audio>
   </div>
@@ -54,6 +54,7 @@
 
 <script>
 const electron = window.require("electron");
+const ipcRenderer = window.require("electron").ipcRenderer;
 const path = window.require("path");
 const fs = window.require("fs");
 
@@ -103,7 +104,7 @@ export default {
     },
     onSettingsClicked(){
       let settingsModal = document.getElementById("settings-modal");
-      if(settingsModal.style.display == "block"){
+      if(settingsModal.style.display === "block"){
         settingsModal.style.display = "none";
       } else {
         settingsModal.style.display = "block";
@@ -132,6 +133,7 @@ export default {
         this.playFinishedSound();
       }
 
+      ipcRenderer.send("bring-to-foreground");
       if(this.showNotifications){
         if(this.working){
           this.showNotification("Time for a break", "Start moving!")
